@@ -1,5 +1,4 @@
 import 'package:ttlock_flutter/ttlock.dart';
-import 'dart:convert' as convert;
 
 typedef TTElectricMeterScanCallback = void Function(
     TTElectricMeterScanModel scanModel);
