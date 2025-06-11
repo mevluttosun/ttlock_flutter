@@ -59,6 +59,7 @@ public class TTLockCommand {
     public static final String COMMAND_SET_LOCK_AUDIO_SWITCH_STATE =
             "setLockAudioSwitchState";
 
+    public static final String COMMAND_GET_ALL_PASSAGE_MODES = "getAllPassageModes";
     public static final String COMMAND_ADD_PASSAGE_MODE = "addPassageMode";
     public static final String COMMAND_DELETE_PASSAGE_MODE = "deletePassageMode";
     public static final String COMMAND_CLEAR_ALL_PASSAGE_MODE = "clearAllPassageModes";

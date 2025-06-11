@@ -51,6 +51,7 @@ enum Command {
   getLockSoundVolumeType,
   setLockSoundVolumeType,
   addPassageMode,
+  getAllPassageModes,
   clearAllPassageModes,
 
   activateLiftFloors,
@@ -140,6 +141,7 @@ class _LockPageState extends State<LockPage> {
     {"Get Lock Sound Volume Type": Command.getLockSoundVolumeType},
     {"Set Lock Sound Volume Type": Command.setLockSoundVolumeType},
     {"Add Passage Mode": Command.addPassageMode},
+    {"Get All Passage Modes": Command.getAllPassageModes},
     {"Clear All Passage Mode": Command.clearAllPassageModes},
     {"Activate Lift Floors": Command.activateLiftFloors},
     {"Set Lift Control Able Floors": Command.setLiftControlAbleFloors},
@@ -528,6 +530,13 @@ class _LockPageState extends State<LockPage> {
         TTLock.addPassageMode(TTPassageModeType.weekly, weekly, null, startTime,
             endTime, lockData, () {
           _showSuccessAndDismiss("Success");
+        }, (errorCode, errorMsg) {
+          _showErrorAndDismiss(errorCode, errorMsg);
+        });
+        break;
+      case Command.getAllPassageModes:
+        TTLock.getAllPassageModes(lockData, (passageModeList) {
+          _showSuccessAndDismiss(passageModeList.toString());
         }, (errorCode, errorMsg) {
           _showErrorAndDismiss(errorCode, errorMsg);
         });

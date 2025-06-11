@@ -79,6 +79,7 @@ class TTLock {
   static const String COMMAND_GET_LOCK_CONFIG = "getLockConfig";
   static const String COMMAND_SET_LOCK_CONFIG = "setLockConfig";
 
+  static const String COMMAND_GET_ALL_PASSAGE_MODES = "getAllPassageModes";
   static const String COMMAND_ADD_PASSAGE_MODE = "addPassageMode";
   static const String COMMAND_CLEAR_ALL_PASSAGE_MODE = "clearAllPassageModes";
   static const String COMMAND_FUNCTION_SUPPORT = "functionSupport";
@@ -787,6 +788,8 @@ class TTLock {
         fail_callback: failedCallback);
   }
 
+//
+
 // ignore: slash_for_doc_comments
 /**
  * Config the lock passage mode. If config succeed,the lock will always be unlocked
@@ -818,6 +821,18 @@ class TTLock {
       map[TTResponse.monthly] = monthly;
     }
     invoke(COMMAND_ADD_PASSAGE_MODE, map, callback,
+        fail_callback: failedCallback);
+  }
+
+// ignore: slash_for_doc_comments
+/**
+ * Get all passage modes
+ * 
+ * lockData The lock data string used to operate lock
+ */
+  static void getAllPassageModes(String lockData,
+      TTGetAllPassageModesCallback callback, TTFailedCallback failedCallback) {
+    invoke(COMMAND_GET_ALL_PASSAGE_MODES, lockData, callback,
         fail_callback: failedCallback);
   }
 
@@ -1808,6 +1823,7 @@ class TTResponse {
   static const String currentTime = "currentTime";
   static const String isOn = "isOn";
   static const String passageModeType = "passageModeType";
+  static const String passageModes = "passageModes";
   static const String weekly = "weekly";
   static const String monthly = "monthly";
 
@@ -2080,6 +2096,9 @@ typedef TTGetLockTimeCallback = void Function(int timestamp);
 typedef TTGetLockSystemCallback = void Function(
     TTLockSystemModel lockSystemModel);
 
+typedef TTGetAllPassageModesCallback = void Function(
+  List<TTCycleModel> PassageModeList,
+);
 typedef TTGetLockPasscodeDataCallback = void Function(String passcodeData);
 typedef TTGetLockAutomaticLockingPeriodicTimeCallback = void Function(
     int currentTime, int minTime, int maxTime);

@@ -83,6 +83,7 @@ public class TtlockModel {
     public String fingerprintNumber;
     public String cardNumber;
 //    @property (nonatomic, strong) NSString *passageModes;
+    public String passageModes;
 
     //最大可设置自动闭锁时间
     public int maxTime;
@@ -164,6 +165,7 @@ public class TtlockModel {
                 ", logType=" + logType +
                 ", records='" + records + '\'' +
                 ", passageModeType=" + passageModeType +
+                ", passageModes='" + passageModes + '\'' +
                 ", weekly=" + weekly +
                 ", monthly=" + monthly +
                 ", state=" + state +

@@ -53,6 +53,7 @@ import com.ttlock.bl.sdk.callback.GetLockVersionCallback;
 import com.ttlock.bl.sdk.callback.GetNBAwakeModesCallback;
 import com.ttlock.bl.sdk.callback.GetNBAwakeTimesCallback;
 import com.ttlock.bl.sdk.callback.GetOperationLogCallback;
+import com.ttlock.bl.sdk.callback.GetPassageModeCallback;
 import com.ttlock.bl.sdk.callback.GetPasscodeVerificationInfoCallback;
 import com.ttlock.bl.sdk.callback.GetRemoteUnlockStateCallback;
 import com.ttlock.bl.sdk.callback.GetUnlockDirectionCallback;
@@ -1240,6 +1241,9 @@ public class TtlockFlutterPlugin implements FlutterPlugin, MethodCallHandler, Ac
       case TTLockCommand.COMMAND_GET_LOCK_POWER:
         getBattery(ttlockModel);
         break;
+      case TTLockCommand.COMMAND_GET_ALL_PASSAGE_MODES:
+        getAllPassageModes(ttlockModel);
+        break;
       case TTLockCommand.COMMAND_ADD_PASSAGE_MODE:
         addPassageMode(ttlockModel);
         break;
@@ -2250,6 +2254,27 @@ public class TtlockFlutterPlugin implements FlutterPlugin, MethodCallHandler, Ac
         TTLockClient.getDefault().setPassageMode(passageModeConfig, ttlockModel.lockData, ttlockModel.lockMac, new SetPassageModeCallback() {
           @Override
           public void onSetPassageModeSuccess() {
+            apiSuccess(ttlockModel);
+          }
+
+          @Override
+          public void onFail(LockError lockError) {
+            apiFail(lockError);
+          }
+        });
+      } else {
+        apiFail(LockError.LOCK_NO_PERMISSION);
+      }
+    });
+  }
+
+  public void getAllPassageModes(final TtlockModel ttlockModel) {
+    PermissionUtils.doWithConnectPermission(activity, success -> {
+      if (success) {
+        TTLockClient.getDefault().getPassageMode(ttlockModel.lockData, ttlockModel.lockMac, new GetPassageModeCallback() {
+          @Override
+          public void onGetPassageModeSuccess(String passageModeConfig) {
+            ttlockModel.passageModes = passageModeConfig;
             apiSuccess(ttlockModel);
           }
 
