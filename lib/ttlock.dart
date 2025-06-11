@@ -1439,7 +1439,19 @@ class TTLock {
           successCallback();
         }
         break;
-
+      case COMMAND_GET_ALL_PASSAGE_MODES:
+        TTGetAllPassageModesCallback getAllPassageModesCallback = callBack;
+        List<PassageMode> passageModeList = [];
+        String? passageModeListString = data[TTResponse.passageModes];
+        if (passageModeListString != null) {
+          List passageModes = convert.jsonDecode(passageModeListString);
+          passageModes.forEach((element) {
+            PassageMode mode = PassageMode.fromJson(element);
+            passageModeList.add(mode);
+          });
+        }
+        getAllPassageModesCallback(passageModeList);
+        break;
       case COMMAND_GET_ADMIN_PASSCODE:
         TTGetAdminPasscodeCallback lockDataCallback = callBack;
         lockDataCallback(data[TTResponse.adminPasscode]);
@@ -2097,7 +2109,7 @@ typedef TTGetLockSystemCallback = void Function(
     TTLockSystemModel lockSystemModel);
 
 typedef TTGetAllPassageModesCallback = void Function(
-  List<TTCycleModel> PassageModeList,
+  List<PassageMode> passageModeList,
 );
 typedef TTGetLockPasscodeDataCallback = void Function(String passcodeData);
 typedef TTGetLockAutomaticLockingPeriodicTimeCallback = void Function(
@@ -2221,6 +2233,28 @@ class TTGatewayScanModel {
 class TTNbAwakeTimeModel {
   TTNbAwakeTimeType type = TTNbAwakeTimeType.point;
   int minutes = 0;
+}
+
+class PassageMode {
+  int? endDate;
+  int? month;
+  int? startDate;
+  int? type;
+  int? weekOrDay;
+
+  PassageMode(
+      {this.endDate, this.month, this.startDate, this.type, this.weekOrDay});
+
+  PassageMode.fromJson(Map<String, dynamic> json) {
+    endDate = json['endDate'];
+    month = json['month'];
+    startDate = json['startDate'];
+    type = json['type'];
+    weekOrDay = json['weekOrDay'];
+  }
+  @override
+  String toString() =>
+      'PassageMode{endDate: $endDate, month: $month, startDate: $startDate, type: $type, weekOrDay: $weekOrDay}';
 }
 
 class TTWifiInfoModel {
