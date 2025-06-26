@@ -1732,8 +1732,8 @@ public class TtlockFlutterPlugin implements FlutterPlugin, MethodCallHandler, Ac
   }
 
   public void setCustomPasscode(final TtlockModel ttlockModel) {
-    // PermissionUtils.doWithConnectPermission(activity, success -> {
-    //   if (success) {
+    PermissionUtils.doWithConnectPermission(activity, success -> {
+      if (success) {
         TTLockClient.getDefault().createCustomPasscode(ttlockModel.passcode, ttlockModel.startDate, ttlockModel.endDate, ttlockModel.lockData, ttlockModel.lockMac, new CreateCustomPasscodeCallback() {
           @Override
           public void onCreateCustomPasscodeSuccess(String passcode) {
@@ -1746,10 +1746,10 @@ public class TtlockFlutterPlugin implements FlutterPlugin, MethodCallHandler, Ac
             apiFail(lockError);
           }
         });
-      // } else {
-      //   apiFail(LockError.LOCK_NO_PERMISSION);
-      // }
-    // });
+      } else {
+        apiFail(LockError.LOCK_NO_PERMISSION);
+      }
+    });
   }
 
   public void modifyPasscode(final TtlockModel ttlockModel) {
